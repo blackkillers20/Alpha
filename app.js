@@ -18,10 +18,20 @@ app.get ('/',async (req, res)=>{
     let dbo = client.db('ProductTesting');
     let results = await dbo.collection("ProductTesing").find({}).toArray({});
     res.render('home', {model:results})
-})
+});
 app.get('/new',(req,res)=>{
  res.render('newProduct')
-})
+});
+app.get("/delete", async(req, res)=>{
+    let id = req.query.id;
+    var ObjectID = require("mongodb").ObjectID;
+    let condition = {_id: ObjectID(id) };
+    let client = await MongoClient.connect(url);
+    let dbo = client.db("ProductTesting");
+    await dbo.collection("ProductTesing").deleteOne(condition);
+    let results = await dbo.collection("ProductTesing").find({}).toArray({});
+    res.redirect('/')
+});
 app.post('/insert', async (req,res)=>{
     let client = await MongoClient.connect(url);
     let dbo = client.db('ProductTesting'); 
