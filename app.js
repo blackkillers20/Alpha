@@ -12,6 +12,12 @@ app.set('view engine','hbs')
 
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: false}))
+app.get('/viewproducts',async(req, res)=>{
+    let client = await MongoClient.connect(url);
+    let dbo = client.db('ProductTesting');
+    let results = await dbo.collection("ProductTesing").find({}).toArray({});
+    res.render('viewproducts', {model:results})
+})
 
 app.get ('/',async (req, res)=>{
     let client = await MongoClient.connect(url);
@@ -19,6 +25,9 @@ app.get ('/',async (req, res)=>{
     let results = await dbo.collection("ProductTesing").find({}).toArray({});
     res.render('home', {model:results})
 });
+app.get ('/about', (req,res)=>{
+    res.render('About')
+})
 app.get('/new',(req,res)=>{
  res.render('newProduct')
 });
@@ -39,7 +48,8 @@ app.post('/insert', async (req,res)=>{
     let Price = req.body.price;
     let Date = req.body.ImportedDate;
     let Clothes = req.body.outfit;
-    let newProduct = {productName: Name, price: Price, ImportedDate: Date, outfit: Clothes};
+    let Image = req.body.img;
+    let newProduct = {productName: Name, price: Price, ImportedDate: Date, outfit: Clothes, img: Image};
     await dbo.collection('ProductTesing').insertOne(newProduct);
     
     res.redirect('/')  
