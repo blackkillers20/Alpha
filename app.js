@@ -12,14 +12,14 @@ app.set('view engine','hbs')
 
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: false}))
-app.get('/viewproducts',async(req, res)=>{
+app.get('/',async(req, res)=>{
     let client = await MongoClient.connect(url);
     let dbo = client.db('ProductTesting');
     let results = await dbo.collection("ProductTesing").find({}).toArray({});
     res.render('viewproducts', {model:results})
 })
 
-app.get ('/',async (req, res)=>{
+app.get ('/Control_Center',async (req, res)=>{
     let client = await MongoClient.connect(url);
     let dbo = client.db('ProductTesting');
     let results = await dbo.collection("ProductTesing").find({}).toArray({});
@@ -41,6 +41,36 @@ app.get("/delete", async(req, res)=>{
     let results = await dbo.collection("ProductTesing").find({}).toArray({});
     res.redirect('/')
 });
+app.get('/edit', async(req, res)=>{
+    let id = req.query.pid;
+    var ObjectID = require("mongodb").ObjectID;
+    let condition = {"_id": ObjectID(id)};
+    let client = await MongoClient.connect(url);
+    let dbo = client.db("ProductTesting");
+    let prod = await dbo.collection("ProductTesing").findOne(condition)
+    res.render('edit', {model: prod});
+})
+app.post('/update', async(req, res)=>{
+    let client = await MongoClient.connect(url);
+    let dbo = client.db("ProductTesting");
+    let Name = req.body.productName;
+    let Price = req.body.price;
+    let Date = req.body.ImportedDate;
+    let Clothes = req.body.outfit;
+    let ID = req.body.pid;
+    var ObjectID = require('mongodb').ObjectID;
+    let condition = {"_id":ObjectID(ID)};
+    let updateProduct ={$set : {productName : Name, price:Price, ImportedDate: Date, outfit: Clothes}} ;
+    await dbo.collection("ProductTesing").updateOne(condition,updateProduct);
+    res.redirect('/');  
+})
+app.post('/search', async(req, res)=>{
+    let searchText = req.body.txtSearch;
+    let client = await MongoClient.connect(url);
+    let dbo = client.db("ProductTesting");
+    let results = await dbo.collection("ProductTesing"). find({productName: new RegExp(searchText, 'i')}).toArray();
+    res.render('viewproducts',{model: results})
+})
 app.post('/insert', async (req,res)=>{
     let client = await MongoClient.connect(url);
     let dbo = client.db('ProductTesting'); 
