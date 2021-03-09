@@ -96,7 +96,7 @@ app.post('/doLogin',(req,res)=>{
         res.render('login', {errorMsg: "INCORRECT!!!!!!!!!!1"})
     }else{
         myses = req.session;
-        myses.userName = nameInput;
+        myses.userName = Nameinput;
         res.redirect('/')
     }
 })
