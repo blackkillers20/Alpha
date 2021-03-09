@@ -106,7 +106,7 @@ app.post('/doLogin',(req,res)=>{
     let Nameinput = req.body.txtName;
     let PassInput = req.body.txtPassword;
     if(Nameinput != 'admin' || PassInput != 'admin'){
-        res.render('login', {errorMsg: "INCORRECT!!!!!!!!!!1"})
+        res.render('Login', {errorMsg: "INCORRECT!!!!!!!!!!1"})
     }else{
         myses = req.session;
         myses.userName = Nameinput;
