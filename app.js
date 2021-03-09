@@ -110,7 +110,7 @@ app.post('/doLogin',(req,res)=>{
     }else{
         myses = req.session;
         myses.userName = Nameinput;
-        res.redirect('/about')
+        res.redirect('/')
     }
 })
 
