@@ -1,6 +1,7 @@
 var express = require('express')
 var app = express()
 const session = require('express-session');
+app.use(session({secret: 'matkhaukhongaibiet_khongcannho',saveUninitialized: true,resave: true}));
 
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://alphazero20:blah123@cluster0.mxgks.mongodb.net/test";
