@@ -1,5 +1,6 @@
 var express = require('express')
 var app = express()
+const session = require('express-session');
 
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://alphazero20:blah123@cluster0.mxgks.mongodb.net/test";
@@ -12,6 +13,7 @@ app.set('view engine','hbs')
 
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: false}))
+
 app.get('/',async(req, res)=>{
     let client = await MongoClient.connect(url);
     let dbo = client.db('ProductTesting');
@@ -50,6 +52,9 @@ app.get('/edit', async(req, res)=>{
     let prod = await dbo.collection("ProductTesing").findOne(condition)
     res.render('edit', {model: prod});
 })
+app.get('/login', (req, res)=>{
+    res.render('Login')
+})
 app.post('/update', async(req, res)=>{
     let client = await MongoClient.connect(url);
     let dbo = client.db("ProductTesting");
@@ -83,6 +88,17 @@ app.post('/insert', async (req,res)=>{
     await dbo.collection('ProductTesing').insertOne(newProduct);
     
     res.redirect('/')  
+})
+app.post('/doLogin',(req,res)=>{
+    let Nameinput = req.body.txtName;
+    let PassInput = req.body.txtPassword;
+    if(Nameinput != 'admin' || PassInput != 'admin'){
+        res.render('login', {errorMsg: "INCORRECT!!!!!!!!!!1"})
+    }else{
+        myses = req.session;
+        myses.userName = nameInput;
+        res.redirect('/')
+    }
 })
 
 var PORT = process.env.PORT || 5000
