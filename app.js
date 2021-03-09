@@ -22,9 +22,10 @@ app.get('/',async(req, res)=>{
     let results = await dbo.collection("ProductTesing").find({}).toArray({});
     res.render('index',{model:results,userName:myses.userName})
     }else{
-        res.render('viewproducts', {model:results})
+        res.render('login')
     }
 })
+
 app.get ('/Control_Center',async (req, res)=>{
     let client = await MongoClient.connect(url);
     let dbo = client.db('ProductTesting');
