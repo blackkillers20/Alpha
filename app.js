@@ -16,12 +16,15 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: false}))
 
 app.get('/',async(req, res)=>{
+    if(myses.userName != null ) {
     let client = await MongoClient.connect(url);
     let dbo = client.db('ProductTesting');
     let results = await dbo.collection("ProductTesing").find({}).toArray({});
-    res.render('viewproducts', {model:results})
+    res.render('index',{model:results,userName:myses.userName})
+    }else{
+        res.render('viewproducts', {model:results})
+    }
 })
-
 app.get ('/Control_Center',async (req, res)=>{
     let client = await MongoClient.connect(url);
     let dbo = client.db('ProductTesting');
