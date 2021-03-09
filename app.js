@@ -15,13 +15,18 @@ app.set('view engine','hbs')
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: false}))
 
-app.get('/',async(req, res)=>{
-    let client = await MongoClient.connect(url);
-    let dbo = client.db('ProductTesting');
-    let results = await dbo.collection("ProductTesing").find({}).toArray({});
-    res.render('viewproducts', {model:results})
+app.get('/', async (req,res)=>{
+    //check session userName if exited
+    myses = req.session;
+    if(myses.userName !=null){   
+        let client= await MongoClient.connect(url);
+        let dbo = client.db("ProductTesting");
+        let results = await dbo.collection("ProductTesing").find({}).toArray();
+        res.render('home',{model:results,userName:myses.userName})
+    }else{
+        res.render('viewproducts', {model: results})
+    }
 })
-
 app.get ('/Control_Center',async (req, res)=>{
     let client = await MongoClient.connect(url);
     let dbo = client.db('ProductTesting');
@@ -98,10 +103,10 @@ app.post('/doLogin',(req,res)=>{
     }else{
         myses = req.session;
         myses.userName = Nameinput;
-        res.redirect('/')
+        res.redirect('/Control_Center')
     }
 })
 
-var PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000
 app.listen(PORT);
 console.log("Server is running at " + PORT)
