@@ -24,7 +24,7 @@ app.get('/', async (req,res)=>{
         let results = await dbo.collection("ProductTesing").find({}).toArray();
         res.render('viewproducts',{model:results,userName:myses.userName})
     }else{
-        res.render('login')
+        res.render('Login')
     }
 })
 app.get('/viewproducts', async(req, res)=>
