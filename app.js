@@ -27,6 +27,13 @@ app.get('/', async (req,res)=>{
         res.render('login')
     }
 })
+app.get('/viewproducts', async(req, res)=>
+{
+    let client= await MongoClient.connect(url);
+    let dbo = client.db("ProductTesting");
+    let results = await dbo.collection("ProductTesing").find({}).toArray();
+    res.render('viewproducts', {model: results}) 
+})
 app.get ('/Control_Center',async (req, res)=>{
     let client = await MongoClient.connect(url);
     let dbo = client.db('ProductTesting');
@@ -103,7 +110,7 @@ app.post('/doLogin',(req,res)=>{
     }else{
         myses = req.session;
         myses.userName = Nameinput;
-        res.redirect('/Control_Center')
+        res.redirect('/viewproducts')
     }
 })
 
