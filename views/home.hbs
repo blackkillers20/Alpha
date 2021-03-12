@@ -21,9 +21,6 @@
                  <li><a href="/viewproducts">View Products</a></li>
             </div>
         </nav>
-        <form action="/search" method="post">
-        Prodcut's name to search <input type="text" name="txtSearch">
-        <input type="submit" value="Search">
         <table>
             <tr>
                 <td>Name</td>
@@ -35,7 +32,7 @@
             </tr>
             {{#each model}}
             <tr>
-                <td><a href="edit?pid={{_id}}">{{productName}}</a></td>
+                <td>{{productName}}</td>
                 <td>{{price}}</td>
                 <td>{{ImportedDate}}</td>
                 <td>{{outfit}}</td> 
