@@ -56,6 +56,30 @@ app.post('/insert', async (req,res)=>{
     
     res.redirect('/viewproducts')  
 })
+app.get('/edit', async(req, res)=>{
+    let id = req.query.pid;
+    var ObjectID = require("mongodb").ObjectID;
+    let condition = {"_id": ObjectID(id)};
+    let client= await MongoClient.connect(url, {useUnifiedTopology: true});
+    let dbo = client.db("ProductTesting");
+    let prod = await dbo.collection("ProductTesing").findOne(condition)
+    res.render('edit', {model: prod});
+})
+
+app.post('/update', async(req, res)=>{
+    let client= await MongoClient.connect(url, {useUnifiedTopology: true});
+    let dbo = client.db("ProductTesting");
+    let Name = req.body.productName;
+    let Price = req.body.price;
+    let Date = req.body.ImportedDate;
+    let Clothes = req.body.outfit;
+    let ID = req.body.pid;
+    var ObjectID = require('mongodb').ObjectID;
+    let condition = {"_id":ObjectID(ID)};
+    let updateProduct ={$set : {productName : Name, price:Price, ImportedDate: Date, outfit: Clothes}} ;
+    await dbo.collection("ProductTesing").updateOne(condition,updateProduct);
+    res.redirect('/viewproducts');  
+})
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT);
