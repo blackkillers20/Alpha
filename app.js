@@ -78,7 +78,7 @@ app.post('/update', async(req, res)=>{
     let condition = {"_id":ObjectID(ID)};
     let updateProduct ={$set : {productName : Name, price:Price, ImportedDate: Date, outfit: Clothes}} ;
     await dbo.collection("ProductTesing").updateOne(condition,updateProduct);
-    res.redirect('/viewproducts');  
+    res.redirect('/');  
 })
 
 const PORT = process.env.PORT || 5000
