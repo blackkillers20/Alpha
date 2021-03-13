@@ -54,7 +54,7 @@ app.post('/insert', async (req,res)=>{
     let newProduct = {productName: Name, price: Price, ImportedDate: Date, outfit: Clothes, img: Image};
     await dbo.collection('ProductTesing').insertOne(newProduct);
     
-    res.redirect('/viewproducts')  
+    res.redirect('/')  
 })
 app.get('/edit', async(req, res)=>{
     let id = req.query.pid;
