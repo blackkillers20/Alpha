@@ -58,9 +58,10 @@ app.post('/insert', async (req,res)=>{
 })
 app.post('/search', async(req, res)=>{
     let searchText = req.body.txtSearch;
+    let searchPrice = req.body.numSearch;
     let client= await MongoClient.connect(url, {useUnifiedTopology: true});
     let dbo = client.db("ProductTesting");
-    let results = await dbo.collection("ProductTesing"). find({price: new RegExp(searchText, 'i', {$gt: 300, $lt: 400})}).toArray();
+    let results = await dbo.collection("ProductTesing"). find({price:{$gte: "300", $lte: "500"}}).toArray();
     res.render('viewproducts',{model: results})
 })
 app.get('/edit', async(req, res)=>{
